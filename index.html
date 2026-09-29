@@ -1,0 +1,163 @@
+```html
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Calendar System</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f2f2f2;
+            text-align: center;
+        }
+
+        .calendar {
+            width: 400px;
+            margin: 50px auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px gray;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #0056b3;
+        }
+
+        .days {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 5px;
+            margin-top: 20px;
+        }
+
+        .day {
+            padding: 12px;
+            border-radius: 5px;
+        }
+
+        .week {
+            font-weight: bold;
+            background: #ddd;
+        }
+
+        .today {
+            background: #007bff;
+            color: white;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="calendar">
+
+    <div class="header">
+        <button onclick="previousMonth()">◀</button>
+
+        <h2 id="monthYear"></h2>
+
+        <button onclick="nextMonth()">▶</button>
+    </div>
+
+    <div class="days" id="calendar"></div>
+
+</div>
+
+<script>
+
+let currentDate = new Date();
+
+function createCalendar() {
+
+    let month = currentDate.getMonth();
+    let year = currentDate.getFullYear();
+
+    let monthNames = [
+        "January", "February", "March", "April",
+        "May", "June", "July", "August",
+        "September", "October", "November", "December"
+    ];
+
+    document.getElementById("monthYear").innerHTML =
+        monthNames[month] + " " + year;
+
+    let calendar = document.getElementById("calendar");
+
+    calendar.innerHTML = "";
+
+    let days = ["Sun", "Mon", "Tue", "Wed",
+                "Thu", "Fri", "Sat"];
+
+    // Week names
+    days.forEach(function(day) {
+        let div = document.createElement("div");
+        div.className = "day week";
+        div.innerHTML = day;
+        calendar.appendChild(div);
+    });
+
+    let firstDay = new Date(year, month, 1).getDay();
+
+    let totalDays = new Date(year, month + 1, 0).getDate();
+
+    // Empty spaces
+    for (let i = 0; i < firstDay; i++) {
+        let div = document.createElement("div");
+        calendar.appendChild(div);
+    }
+
+    // Dates
+    for (let date = 1; date <= totalDays; date++) {
+
+        let div = document.createElement("div");
+        div.className = "day";
+        div.innerHTML = date;
+
+        let today = new Date();
+
+        if (
+            date === today.getDate() &&
+            month === today.getMonth() &&
+            year === today.getFullYear()
+        ) {
+            div.classList.add("today");
+        }
+
+        calendar.appendChild(div);
+    }
+}
+
+function previousMonth() {
+    currentDate.setMonth(currentDate.getMonth() - 1);
+    createCalendar();
+}
+
+function nextMonth() {
+    currentDate.setMonth(currentDate.getMonth() + 1);
+    createCalendar();
+}
+
+createCalendar();
+
+</script>
+
+</body>
+</html>
+```
